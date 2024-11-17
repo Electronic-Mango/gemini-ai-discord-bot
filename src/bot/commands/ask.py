@@ -15,7 +15,7 @@ ask_plugin = Plugin("ask_plugin")
 @command("ask", "Ask for specific thing", auto_defer=True)
 @implements(SlashCommand)
 async def ask(context: Context) -> None:
-    response = await next_message(context.channel_id, context.options.query)
+    response = next_message(context.channel_id, context.options.query)
     await send(response, context.respond)
 
 
@@ -26,7 +26,7 @@ async def ask(context: Context) -> None:
 async def ask_directly(context: Context) -> None:
     text = context.options.target.content
     image_urls = parse_image_urls(context.options.target.attachments)
-    response = await next_message(context.channel_id, text, image_urls)
+    response = next_message(context.channel_id, text, image_urls)
     await send(response, context.respond)
 
 

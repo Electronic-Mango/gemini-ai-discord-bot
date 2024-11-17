@@ -1,3 +1,5 @@
+from asyncio import sleep
+
 from hikari import MessageCreateEvent
 from lightbulb import BotApp, Context, Plugin, SlashCommand, add_checks, command, implements
 
@@ -16,7 +18,7 @@ source_channels = load_source_channels()
 @command("start", "Start conversation", auto_defer=True)
 @implements(SlashCommand)
 async def start(context: Context) -> None:
-    start_message = await initial_message(context.channel_id)
+    start_message = initial_message(context.channel_id)
     await _start(start_message, context)
 
 
@@ -60,17 +62,18 @@ async def restart(context: Context) -> None:
 
 @all_plugin.listener(event=MessageCreateEvent)
 async def on_message(event: MessageCreateEvent) -> None:
-    if await _should_skip_message(event):
+    if _should_skip_message(event):
         return
     channel = await event.message.fetch_channel()
     async with channel.trigger_typing():
+        await sleep(0.1)  # Give the bot time to trigger typing indicator.
         text = event.message.content
         image_urls = parse_image_urls(event.message.attachments)
-        response = await next_message(event.channel_id, text, image_urls)
+        response = next_message(event.channel_id, text, image_urls)
         await send(response, event.message.respond)
 
 
-async def _should_skip_message(event: MessageCreateEvent) -> bool:
+def _should_skip_message(event: MessageCreateEvent) -> bool:
     return not event.is_human or not event.content or event.channel_id not in source_channels
 
 
