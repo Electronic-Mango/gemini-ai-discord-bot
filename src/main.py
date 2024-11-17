@@ -6,7 +6,6 @@ from lightbulb import BotApp
 
 from bot.commands.all import load as load_all
 from bot.commands.ask import load as load_ask
-from bot.commands.prompt import load as load_prompt
 
 
 def main():
@@ -15,7 +14,6 @@ def main():
     bot = BotApp(token=getenv("BOT_TOKEN"), intents=intents, logs="DEBUG")
     load_all(bot)
     load_ask(bot)
-    load_prompt(bot)
     bot.run()
 
 
