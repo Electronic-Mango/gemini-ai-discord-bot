@@ -4,18 +4,20 @@ from dotenv import load_dotenv
 from hikari import Intents
 from lightbulb import BotApp
 
-from commands.all import load as load_all
-from commands.ask import load as load_ask
-from commands.prompt import load as load_prompt
+from bot.commands.all import load as load_all
+from bot.commands.ask import load as load_ask
+from bot.commands.prompt import load as load_prompt
 
-load_dotenv()
 
-INTENTS = Intents.MESSAGE_CONTENT | Intents.DM_MESSAGES | Intents.GUILD_MESSAGES
+def main():
+    load_dotenv()
+    intents = Intents.MESSAGE_CONTENT | Intents.DM_MESSAGES | Intents.GUILD_MESSAGES
+    bot = BotApp(token=getenv("BOT_TOKEN"), intents=intents, logs="DEBUG")
+    load_all(bot)
+    load_ask(bot)
+    load_prompt(bot)
+    bot.run()
 
-bot = BotApp(token=getenv("BOT_TOKEN"), intents=INTENTS, logs="DEBUG")
 
-load_all(bot)
-load_ask(bot)
-load_prompt(bot)
-
-bot.run()
+if __name__ == "__main__":
+    main()

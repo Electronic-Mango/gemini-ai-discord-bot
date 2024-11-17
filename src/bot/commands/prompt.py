@@ -10,9 +10,15 @@ from lightbulb import (
     option,
 )
 
-from chat import get_custom_prompt, remove_custom_prompt, remove_prompt, reset_conversation, store_custom_prompt
-from command_check import check
-from sender import send
+from bot.command_check import check
+from bot.sender import send
+from gemini.chat import (
+    get_custom_prompt,
+    remove_custom_prompt,
+    remove_prompt,
+    reset_conversation,
+    store_custom_prompt,
+)
 
 prompt_plugin = Plugin("prompt_plugin")
 
@@ -56,7 +62,9 @@ async def prompt_reset(context: Context) -> None:
 async def prompt_get(context: Context) -> None:
     channel_id = context.channel_id
     custom_prompt = get_custom_prompt(channel_id)
-    response = f"Prompt set to: **{custom_prompt}**" if custom_prompt else "No custom prompt configured."
+    response = (
+        f"Prompt set to: **{custom_prompt}**" if custom_prompt else "No custom prompt configured."
+    )
     await send(response, context.respond)
 
 

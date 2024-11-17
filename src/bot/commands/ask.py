@@ -1,10 +1,10 @@
 from lightbulb import BotApp, Context, Plugin, SlashCommand, add_checks, command, implements, option
 from lightbulb.commands import MessageCommand
 
-from attachment_parser import parse_image_urls
-from chat import next_message
-from command_check import check
-from sender import send
+from bot.attachment_parser import parse_image_urls
+from bot.command_check import check
+from bot.sender import send
+from gemini.chat import next_message
 
 ask_plugin = Plugin("ask_plugin")
 

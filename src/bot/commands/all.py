@@ -1,11 +1,11 @@
 from hikari import MessageCreateEvent
 from lightbulb import BotApp, Context, Plugin, SlashCommand, add_checks, command, implements
 
-from attachment_parser import parse_image_urls
-from chat import initial_message, next_message, reset_conversation
-from command_check import check
+from bot.attachment_parser import parse_image_urls
+from bot.command_check import check
+from bot.sender import send
+from gemini.chat import initial_message, next_message, reset_conversation
 from persistence import load_source_channels, store_source_channel
-from sender import send
 
 all_plugin = Plugin("all_plugin")
 source_channels = load_source_channels()

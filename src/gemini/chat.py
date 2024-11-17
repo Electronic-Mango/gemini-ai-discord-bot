@@ -29,7 +29,9 @@ async def initial_message(channel_id: int) -> str | None:
     return await next_message(channel_id, WELCOME_MESSAGE, use_conversation=False)
 
 
-async def next_message(channel_id: int, text: str, image_urls: list[str] = None, use_conversation: bool = True) -> str:
+async def next_message(
+    channel_id: int, text: str, image_urls: list[str] = None, use_conversation: bool = True
+) -> str:
     if not image_urls:
         image_urls = []
     prompt = custom_prompts[channel_id]
