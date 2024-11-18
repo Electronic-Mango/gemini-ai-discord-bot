@@ -62,7 +62,7 @@ async def restart(context: Context) -> None:
 
 @all_plugin.listener(event=MessageCreateEvent)
 async def on_message(event: MessageCreateEvent) -> None:
-    if _should_skip_message(event):
+    if not event.is_human or not event.content or event.channel_id not in source_channels:
         return
     channel = await event.message.fetch_channel()
     async with channel.trigger_typing():
@@ -71,10 +71,6 @@ async def on_message(event: MessageCreateEvent) -> None:
         image_urls = parse_image_urls(event.message.attachments)
         response = next_message(event.channel_id, text, image_urls)
         await send(response, event.message.respond)
-
-
-def _should_skip_message(event: MessageCreateEvent) -> bool:
-    return not event.is_human or not event.content or event.channel_id not in source_channels
 
 
 def load(bot: BotApp) -> None:
