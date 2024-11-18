@@ -2,6 +2,7 @@ from lightbulb import BotApp, Context, Plugin, SlashCommand, add_checks, command
 from lightbulb.commands import MessageCommand
 
 from bot.command_check import check
+from bot.downloader import download_attachments
 from bot.sender import send
 from gemini.chat import next_message
 
@@ -15,8 +16,8 @@ ask_plugin = Plugin("ask_plugin")
 @implements(SlashCommand)
 async def ask(context: Context) -> None:
     text = context.options.query
-    attachment_urls = map(lambda a: a.url, context.attachments)
-    response = await next_message(context.channel_id, text, attachment_urls)
+    attachments = await download_attachments(context.attachments)
+    response = await next_message(context.channel_id, text, attachments)
     await send(response, context.respond)
 
 
@@ -26,8 +27,8 @@ async def ask(context: Context) -> None:
 @implements(MessageCommand)
 async def ask_directly(context: Context) -> None:
     text = context.options.target.content
-    attachment_urls = map(lambda a: a.url, context.options.target.attachments)
-    response = await next_message(context.channel_id, text, attachment_urls)
+    attachments = await download_attachments(context.options.target.attachments)
+    response = await next_message(context.channel_id, text, attachments)
     await send(response, context.respond)
 
 

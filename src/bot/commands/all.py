@@ -4,6 +4,7 @@ from hikari import MessageCreateEvent
 from lightbulb import BotApp, Context, Plugin, SlashCommand, add_checks, command, implements
 
 from bot.command_check import check
+from bot.downloader import download_attachments
 from bot.sender import send
 from gemini.chat import initial_message, next_message, reset_conversation
 from persistence import load_source_channels, store_source_channel
@@ -55,8 +56,8 @@ async def on_message(event: MessageCreateEvent) -> None:
     async with channel.trigger_typing():
         await sleep(0.1)  # Give the bot time to trigger typing indicator.
         text = event.message.content
-        attachment_urls = map(lambda a: a.url, event.message.attachments)
-        response = await next_message(channel.id, text, attachment_urls)
+        attachments = await download_attachments(event.message.attachments)
+        response = await next_message(channel.id, text, attachments)
         await send(response, event.message.respond)
 
 

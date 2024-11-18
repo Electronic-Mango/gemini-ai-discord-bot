@@ -8,7 +8,6 @@ from dotenv import load_dotenv
 from google.generativeai import GenerativeModel, configure, get_file, upload_file
 from google.generativeai.types import File, HarmBlockThreshold
 from google.generativeai.types.retriever_types import State
-from httpx import AsyncClient, Response, codes
 
 load_dotenv()
 
@@ -37,28 +36,20 @@ def reset_conversation(channel_id: int) -> None:
     chats.pop(channel_id, None)
 
 
-async def next_message(channel_id: int, text: str, file_urls: Iterable[str]) -> str:
-    content = [file for url in file_urls if (file := await _prepare_file(url))] + [text or ""]
+async def next_message(channel_id: int, text: str, files: Iterable[tuple[BytesIO, str]]) -> str:
+    content = [file for data in files if (file := await _prepare_file(*data))] + [text or ""]
     if not any(content):
         return NO_CONTENT_ERROR_MESSAGE
     return await _send_message(channel_id, content)
 
 
-async def _prepare_file(url: str) -> File | None:
-    response = await _download_file(url)
-    if not codes.is_success(response.status_code):
-        return None
-    file = await _upload_file(response.content, response.headers.get("content-type"))
+async def _prepare_file(data: BytesIO, mime_type: str) -> File | None:
+    file = await _upload_file(data, mime_type)
     return file if file.state.value == State.STATE_ACTIVE else None
 
 
-async def _download_file(url: str) -> Response:
-    async with AsyncClient() as client:
-        return await client.get(url)
-
-
-async def _upload_file(content: bytes, mime_type: str) -> File:
-    file = upload_file(BytesIO(content), mime_type=mime_type)
+async def _upload_file(data: BytesIO, mime_type: str) -> File:
+    file = upload_file(data, mime_type=mime_type)
     while file.state.value == State.STATE_PENDING_PROCESSING:
         await sleep(1)
         file = get_file(file.name)
