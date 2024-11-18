@@ -65,7 +65,7 @@ async def _upload_file(content: bytes, mime_type: str) -> File:
     return file
 
 
-async def _send_message(channel_id: str, content: list[str | File]) -> str:
+async def _send_message(channel_id: int, content: list[str | File]) -> str:
     try:
         response = await chats[channel_id].send_message_async(content)
         return response.text
