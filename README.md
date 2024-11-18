@@ -1,6 +1,6 @@
-# Simple OpenAI text model Discord bot
+# Simple Gemini AI Discord bot
 
-A simple and unofficial Discord bot wrapping [OpenAI API](https://openai.com/blog/openai-api/) text models (like [ChatGPT](https://openai.com/blog/chatgpt)), build with [`hikari`](https://github.com/hikari-py/hikari) and [`lightbulb`](https://github.com/tandemdude/hikari-lightbulb)!
+A simple and unofficial Discord bot wrapping [Gemini AI API](https://ai.google.dev/), build with [`hikari`](https://github.com/hikari-py/hikari) and [`lightbulb`](https://github.com/tandemdude/hikari-lightbulb)!
 
 Bot works on servers for everyone, it will respond to DMs only for bot owner.
 
@@ -8,7 +8,7 @@ Bot works on servers for everyone, it will respond to DMs only for bot owner.
 
 ## Requirements
 
-This bot was built with `Python 3.11`, [`hikari`](https://github.com/hikari-py/hikari), [`lightbulb`](https://github.com/tandemdude/hikari-lightbulb) and [`openai-python`](https://github.com/openai/openai-python).
+This bot was built with `Python 3.12`, [`hikari`](https://github.com/hikari-py/hikari), [`lightbulb`](https://github.com/tandemdude/hikari-lightbulb) and [`generative-ai-python`](https://github.com/google-gemini/generative-ai-python).
 Full list of Python requirements is in the `requirements.txt` file, you can use it to install all of them.
 
 
@@ -72,30 +72,21 @@ After bot is restarted (if the specified file still exists and wasn't modified) 
 however it won't be able to "pick up" the conversation.
 
 
-### OpenAI API
+### Gemini AI API
 
-One required parameter is [API key](https://platform.openai.com/account/api-keys).
+One required parameter is [API key](https://ai.google.dev/gemini-api/docs/api-key).
 
 ```dotenv
-OPENAI_TOKEN='<your secret API key>'
+GEMINI_API_KEY='<your secret API key>'
 ```
 
 Through `.env` you can also configure other parameters:
-* `OPENAI_MODEL` - which model to use (gpt-3.5-turbo is used by default)
-* `OPENAI_SYSTEM_MESSAGE` - system message
-* `OPENAI_CONTEXT_LIMIT` - how many messages will be kept in the context aside from prompt, all messages will be kept if empty
-* `OPENAI_INITIAL_MESSAGE` - additional message added after system message to all conversations, can be empty for no additional messages
-* `OPENAI_LOG` - log level of OpenAI API, either `debug` or `info`, can be empty for no additional logging configuration
-
-Note that `gpt-3.5-turbo` [doesn't pay strong attention to system message](https://platform.openai.com/docs/guides/chat/instructing-chat-models), so changing it might not provide significant changes to responses.
-You can use `OPENAI_INITIAL_MESSAGE` to tweak initial behaviour of the model.
+* `GEMINI_MODEL` - which [model](https://ai.google.dev/gemini-api/docs/models/gemini) to use (`gemini-1.5-flash` is used by default)
+* `GEMINI_SYSTEM_INSTRUCTION` - [system instruction](https://ai.google.dev/gemini-api/docs/system-instructions?lang=python)
 
 ```dotenv
-OPENAI_MODEL='gpt-3.5-turbo'
-OPENAI_SYSTEM_MESSAGE='You are a helpful assistant.'
-OPENAI_CONTEXT_LIMIT=1000
-OPENAI_INITIAL_MESSAGE='You are a helpful assistant acting like 18th century butler,'
-OPENAI_LOG='info'
+GEMINI_MODEL='gemini-1.5-flash-8b'
+GEMINI_SYSTEM_INSTRUCTION='You are a helpful assistant.'
 ```
 
 
@@ -110,10 +101,6 @@ All commands work on servers for everyone and in DMs for bot owner.
 * `/restart` - reset current conversation and removes all context, other than system message
 * `/ask` - ask for specific prompt, can be used in channels which aren't actively monitored
 * `ask` - **message command**, can use specified message as prompt
-* `/prompt set <prompt text>` - set custom prompt for this channel
-* `/prompt reset` - clear custom prompt for this channel
-* `/prompt remove` - remove all prompts, including ones from bot configuration file
-* `/prompt get` - get custom prompt, won't return prompt from configuration file to avoid leaking configuration data to users
 
 
 
@@ -125,7 +112,7 @@ You can run the bot from the source code directly, or in a Docker container.
 ### From source code
 
 1. Create a Discord bot
-2. Create [OpenAI API key](https://platform.openai.com/account/api-keys)
+2. Create [Gemini AI API key](https://ai.google.dev/gemini-api/docs/api-key)
 3. Install all packages from `requirements.txt`
 4. Fill `.env` file
 5. Run `main.py` file with Python
@@ -134,7 +121,7 @@ You can run the bot from the source code directly, or in a Docker container.
 ### Docker
 
 1. Create a Discord bot
-2. Create [OpenAI API key](https://platform.openai.com/account/api-keys)
+2. Create [Gemini AI API key](https://ai.google.dev/gemini-api/docs/api-key)
 3. Fill `.env` file
 4. Run `docker compose up -d --build` in terminal
 
@@ -147,6 +134,6 @@ When using Docker the bot will automatically store channel IDs for purposes of `
 
 ## Disclaimer
 
-This bot is in no way affiliated, associated, authorized, endorsed by, or in any way officially connected with OpenAI.
+This bot is in no way affiliated, associated, authorized, endorsed by, or in any way officially connected with Gemini AI or Google.
 This is an independent and unofficial project.
 Use at your own risk.

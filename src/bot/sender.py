@@ -2,13 +2,13 @@ from os import getenv
 from textwrap import wrap
 from typing import Awaitable, Callable
 
+from dotenv import load_dotenv
+
+load_dotenv()
 MAX_MESSAGE_LENGTH = int(getenv("MAX_MESSAGE_LENGTH", 2000))
 
 
 async def send(message: str, sender: Callable[[str], Awaitable[None]]) -> None:
-    if len(message) <= MAX_MESSAGE_LENGTH:
-        await sender(message.strip())
-        return
     parts = wrap(
         message,
         MAX_MESSAGE_LENGTH,
@@ -19,4 +19,4 @@ async def send(message: str, sender: Callable[[str], Awaitable[None]]) -> None:
         drop_whitespace=False,
     )
     for partial in parts:
-        await sender(partial.strip())
+        await sender(partial)
