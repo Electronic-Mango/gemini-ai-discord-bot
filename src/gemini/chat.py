@@ -6,7 +6,7 @@ from google.generativeai import GenerativeModel, configure
 
 load_dotenv()
 
-WELCOME_MESSAGE = "Show a welcome message explaining who you are and what you can do."
+WELCOME_MESSAGE_REQUEST = "Show a welcome message explaining who you are and what you can do."
 RATE_LIMIT_MESSAGE = "Rate limit reached, try again in 20s."
 
 API_KEY = getenv("GEMINI_API_KEY")
@@ -19,8 +19,8 @@ model = GenerativeModel(MODEL)
 chats = defaultdict(model.start_chat)
 
 
-def initial_message(channel_id: int) -> str | None:
-    return next_message(channel_id, WELCOME_MESSAGE, use_conversation=False)
+def initial_message() -> str | None:
+    return model.generate_content(WELCOME_MESSAGE_REQUEST).text
 
 
 def reset_conversation(channel_id: int) -> None:

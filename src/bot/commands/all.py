@@ -18,7 +18,7 @@ source_channels = load_source_channels()
 @command("start", "Start conversation", auto_defer=True)
 @implements(SlashCommand)
 async def start(context: Context) -> None:
-    start_message = initial_message(context.channel_id)
+    start_message = initial_message()
     await _start(start_message, context)
 
 
