@@ -41,8 +41,7 @@ async def next_message(channel_id: int, text: str, file_urls: Iterable[str]) -> 
     content = [file for url in file_urls if (file := await _prepare_file(url))] + [text or ""]
     if not any(content):
         return NO_CONTENT_ERROR_MESSAGE
-    response = await chats[channel_id].send_message_async(content)
-    return response.text
+    return await _send_message(channel_id, content)
 
 
 async def _prepare_file(url: str) -> File | None:
@@ -64,3 +63,11 @@ async def _upload_file(content: bytes, mime_type: str) -> File:
         await sleep(1)
         file = get_file(file.name)
     return file
+
+
+async def _send_message(channel_id: str, content: list[str | File]) -> str:
+    try:
+        response = await chats[channel_id].send_message_async(content)
+        return response.text
+    except Exception as e:
+        return str(e)
