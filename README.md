@@ -1,6 +1,7 @@
 # Simple Gemini AI Discord bot
 
 A simple and unofficial Discord bot wrapping [Gemini AI API](https://ai.google.dev/), build with [`hikari`](https://github.com/hikari-py/hikari) and [`lightbulb`](https://github.com/tandemdude/hikari-lightbulb)!
+Response Markdown is formatted with [`mdformat`](https://github.com/hukkin/mdformat) and split into messages with my own [`simple-markdown-splitter`](https://github.com/Electronic-Mango/simple-markdown-splitter).
 
 Bot works on servers for everyone, it will respond to DMs only for bot owner.
 
