@@ -9,6 +9,7 @@ Bot works on servers for everyone, it will respond to DMs only for bot owner.
 ## Requirements
 
 This bot was built with `Python 3.12`, [`hikari`](https://github.com/hikari-py/hikari), [`lightbulb`](https://github.com/tandemdude/hikari-lightbulb) and [`generative-ai-python`](https://github.com/google-gemini/generative-ai-python).
+Response Markdown is formatted with [`mdformat`](https://github.com/hukkin/mdformat) and split into messages with my own [`simple-markdown-splitter`](https://github.com/Electronic-Mango/simple-markdown-splitter).
 Full list of Python requirements is in the `requirements.txt` file, you can use it to install all of them.
 
 
