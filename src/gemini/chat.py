@@ -11,7 +11,7 @@ from google.generativeai.types.retriever_types import State
 
 load_dotenv()
 
-WELCOME_MESSAGE_REQUEST = "Show a welcome message explaining who you are and what you can do."
+WELCOME_MESSAGE_REQUEST = "Hello!"
 NO_CONTENT_ERROR_MESSAGE = "Cannot respond without any information!"
 
 API_KEY = getenv("GEMINI_API_KEY")
